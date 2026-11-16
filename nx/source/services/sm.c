@@ -143,6 +143,22 @@ Result smRegisterServiceTipc(Handle* handle_out, SmServiceName name, bool is_lig
     );
 }
 
+#if defined(__SWITCH2__)
+Result smRegisterServiceInSpace(Handle* handle_out, u32 space_set, SmServiceName name, bool is_light, s32 max_sessions) {
+    const struct {
+        u32 space_set;
+        SmServiceName service_name;
+        s32 max_sessions;
+        u8 is_light;
+    } in = { space_set, name, max_sessions, is_light!=0 };
+
+    return tipcDispatchIn(&g_smSrv.tipc, 2, in,
+        .out_handle_attrs = { SfOutHandleAttr_HipcMove },
+        .out_handles = handle_out,
+    );
+}
+#endif
+
 Result smUnregisterService(SmServiceName name) {
     if (_smShouldUseTipc())
         return smUnregisterServiceTipc(name);

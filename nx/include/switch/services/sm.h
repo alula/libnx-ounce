@@ -124,6 +124,11 @@ Result smRegisterServiceCmif(Handle* handle_out, SmServiceName name, bool is_lig
 /// Same as \ref smRegisterService, but always using tipc serialization.
 Result smRegisterServiceTipc(Handle* handle_out, SmServiceName name, bool is_light, s32 max_sessions);
 
+#if defined(__SWITCH2__)
+/// Same as \ref smRegisterServiceTipc, but specifying a space set and always using tipc serialization.
+Result smRegisterServiceInSpace(Handle* handle_out, u32 space_set, SmServiceName name, bool is_light, s32 max_sessions);
+#endif
+
 /**
  * @brief Unregisters a previously registered service in SM.
  * @param[in] name Name of the service.
